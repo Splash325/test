@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>drawing</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<style>
+*{margin:0;padding:0;}
+.clearfix:after{content: '';display: block;clear:both;}
+.fl{float:left;}
+.fr{float:right;}
+#wrap{
+height: 50px;
+background: #efefef;
+margin-top: 50px;
+line-height: 50px;
+text-align: center;
+}
+#wrap .size,#wrap .opc{
+width: 64px;
+height: 20px;
+text-align: center;
+}
+
+#wrap .color,#wrap .bgc{
+width: 25px;
+border: none;
+}
+#wrap .back{
+width: 60px;
+height: 30px;
+background: #eee;
+border: 1px solid #aaa;
+}
+#wrap .pen{
+height: 600px;
+border: 1px solid #ccc;
+cursor: default;
+}
+.pen i{
+position: absolute;
+width: 10px;
+height: 10px;
+background: #000;
+border-radius: 50%;
+}
+</style>
+</head>
+<body>
+<h1>Collaborate!</h1>
+    <textarea>Hello out there!</textarea>
+    <script src="https://togetherjs.com/togetherjs-min.js">
+    </script>
+    <div id="togetherjs-div">
+      <button onclick="TogetherJS(this); return false;">Start TogetherJS</button>
+    </div>
+<div id="wrap">
+<div class="toolbar">
+<input class='size' type="text" placeholder="size">
+<input class="color" type="color">
+<input class="bgc" type="color">
+<input class="opc" type="text" placeholder="opacity">
+<input class='back' type="button" value="后退">
+</div>
+<div class="pen">
+<!-- <i></i> -->
+</div>
+
+
+</div>
+
+</body>
+<script>
+var aInput = document.getElementsByTagName('input'),
+oSize = aInput[0],
+oColor = aInput[1],
+oBgc = aInput[2],
+Opac = aInput[3],
+oBack = aInput[4];
+var size = 10,color='#000',opac = 1,arr=[];
+oBgc.value = '#ffffff';
+var oPen = document.querySelector('.pen');
+oSize.onchange = function(){
+size = this.value;
+}
+oColor.onchange = function(){
+color = this.value;
+}
+oBgc.onchange = function(){
+oPen.style.background = this.value;
+}
+Opac.onchange = function(){
+opac = this.value;
+}
+oBack.onclick = function(){
+console.log(arr.length);
+if(!arr.length){
+return ;
+}
+//删除操作
+(function remove(){
+if(arr[arr.length-1].length){
+oPen.removeChild(arr[arr.length-1].pop());//删除数组里面最后一个元素
+remove();
+}
+
+})();
+arr.pop();
+}
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+oPen.onmousedown = function(e){
+arr.push([]);
+oSize.blur();//失去焦点
+Opac.blur();
+e = e||window.event;
+var i = document.createElement('i');
+i.style.width = size+'px';
+i.style.height = size+'px';
+i.style.top = e.clientY - size/2 +'px';
+i.style.left = e.clientX - size/2 +'px';
+i.style.background = color;
+i.style.opacity = opac;
+oPen.appendChild(i);
+arr[arr.length-1].push(i);
+document.onmousemove = function(e){
+e = e||window.event;
+var i = document.createElement('i');
+i.style.width = size+'px';
+i.style.height = size+'px';
+i.style.top = e.clientY - size/2 +'px';
+i.style.left = e.clientX - size/2 +'px';
+i.style.background = color;
+i.style.opacity = opac;
+oPen.appendChild(i);
+arr[arr.length-1].push(i);
+}
+document.onmouseup = function(){
+document.onmousedown = null;
+document.onmousemove = null;
+
+}
+return false;
+
+
+}
+
+ 
+
+
+</script>
+</html>
